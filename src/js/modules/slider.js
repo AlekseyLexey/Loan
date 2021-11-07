@@ -20,6 +20,23 @@ export default class Slider{
 		});
 
 		this.slides[this.slideIndex - 1].style.display = '';
+
+		try {
+			this.hanson.style.opacity = 0;
+			this.hanson.style.visibility = 'hidden';
+			this.hanson.classList.add('animated');
+			if (this.slideIndex === 3) {
+				setTimeout(() => {
+				this.hanson.style.opacity = 1;
+				this.hanson.style.visibility = 'visible';
+				this.hanson.classList.add('slideInUp');
+				}, 3000);
+			} else {
+				this.hanson.classList.remove('slideInUp');
+			}
+		} catch (error) {
+			
+		}
 	}
 
 	plusSlide(n) {
@@ -27,10 +44,16 @@ export default class Slider{
 	}
 
 	render() {
+		try {
+			this.hanson = document.querySelector('.hanson');
+		} catch (error) {
+			
+		}
 
 		this.btns.forEach(element => {
 			element.addEventListener('click', () => {
 				this.plusSlide(1);
+				console.log(this.slideIndex);
 			});
 			element.parentNode.previousElementSibling.addEventListener('click', () => {
 				this.slideIndex = 1;

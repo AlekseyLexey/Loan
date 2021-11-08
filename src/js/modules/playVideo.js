@@ -29,10 +29,7 @@ export default class Player{
 					const path = item.getAttribute('data-url');
 					this.createPlayer(path);
 				}
-
 				this.modal.style.display = 'flex';
-
-				this.closePlay();
 			});
 		});
 	}
@@ -46,5 +43,6 @@ export default class Player{
 		firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
 		this.triggerPlay();
+		this.closePlay();
 	}
 }

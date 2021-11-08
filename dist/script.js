@@ -1010,8 +1010,6 @@ function () {
           }
 
           _this2.modal.style.display = 'flex';
-
-          _this2.closePlay();
         });
       });
     }
@@ -1023,6 +1021,7 @@ function () {
       var firstScriptTag = document.getElementsByTagName('script')[0];
       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
       this.triggerPlay();
+      this.closePlay();
     }
   }]);
 

@@ -1,5 +1,5 @@
 import Player from "./modules/playVideo";
-import Slider from "./modules/slider";
+import SliderMain from "./modules/slider/main-slider";
 
 
 
@@ -7,7 +7,7 @@ import Slider from "./modules/slider";
 window.addEventListener('DOMContentLoaded', () => {
 	"use strict";
 
-	const sliderMain = new Slider('.page', '.next');
+	const sliderMain = new SliderMain({sliderSelector: '.page', btns: '.next'});
 	sliderMain.render();
 
 	const player = new Player('.play', '.overlay');

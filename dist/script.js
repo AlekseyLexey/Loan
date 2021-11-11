@@ -2760,28 +2760,30 @@ module.exports = g;
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _modules_playVideo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/playVideo */ "./src/js/modules/playVideo.js");
-/* harmony import */ var _modules_slider_main_slider__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/slider/main-slider */ "./src/js/modules/slider/main-slider.js");
-/* harmony import */ var _modules_slider_mini_slider__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/slider/mini-slider */ "./src/js/modules/slider/mini-slider.js");
+/* harmony import */ var _modules_difference__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/difference */ "./src/js/modules/difference.js");
+/* harmony import */ var _modules_playVideo__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/playVideo */ "./src/js/modules/playVideo.js");
+/* harmony import */ var _modules_slider_main_slider__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/slider/main-slider */ "./src/js/modules/slider/main-slider.js");
+/* harmony import */ var _modules_slider_mini_slider__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/slider/mini-slider */ "./src/js/modules/slider/mini-slider.js");
+
 
 
 
 window.addEventListener('DOMContentLoaded', function () {
   "use strict";
 
-  var sliderMain = new _modules_slider_main_slider__WEBPACK_IMPORTED_MODULE_1__["default"]({
+  var sliderMain = new _modules_slider_main_slider__WEBPACK_IMPORTED_MODULE_2__["default"]({
     sliderSelector: '.page',
     btns: '.next'
   });
   sliderMain.render();
-  var showUpSlider = new _modules_slider_mini_slider__WEBPACK_IMPORTED_MODULE_2__["default"]({
+  var showUpSlider = new _modules_slider_mini_slider__WEBPACK_IMPORTED_MODULE_3__["default"]({
     sliderSelector: '.showup__content-slider',
     next: '.showup__next',
     prev: '.showup__prev',
     activeClass: 'card-active'
   });
   showUpSlider.init();
-  var modulesContentSlider = new _modules_slider_mini_slider__WEBPACK_IMPORTED_MODULE_2__["default"]({
+  var modulesContentSlider = new _modules_slider_mini_slider__WEBPACK_IMPORTED_MODULE_3__["default"]({
     sliderSelector: '.modules__content-slider',
     next: '.modules__info-btns .slick-next',
     prev: '.modules__info-btns .slick-prev',
@@ -2790,16 +2792,92 @@ window.addEventListener('DOMContentLoaded', function () {
     btns: '.modules__info-btns button'
   });
   modulesContentSlider.init();
-  var feedSlider = new _modules_slider_mini_slider__WEBPACK_IMPORTED_MODULE_2__["default"]({
+  var feedSlider = new _modules_slider_mini_slider__WEBPACK_IMPORTED_MODULE_3__["default"]({
     sliderSelector: '.feed__slider-wrapper',
     next: '.feed__slider .slick-next',
     prev: '.feed__slider .slick-prev',
     activeClass: 'feed__item-active'
   });
   feedSlider.init();
-  var player = new _modules_playVideo__WEBPACK_IMPORTED_MODULE_0__["default"]('.play', '.overlay');
+  var player = new _modules_playVideo__WEBPACK_IMPORTED_MODULE_1__["default"]('.play', '.overlay');
   player.play();
+  new _modules_difference__WEBPACK_IMPORTED_MODULE_0__["default"]('.officerold', '.officernew', '.officer__card-item').init();
 });
+
+/***/ }),
+
+/***/ "./src/js/modules/difference.js":
+/*!**************************************!*\
+  !*** ./src/js/modules/difference.js ***!
+  \**************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Difference; });
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Difference =
+/*#__PURE__*/
+function () {
+  function Difference(officerOld, officerNew, items) {
+    _classCallCheck(this, Difference);
+
+    this.officerOld = document.querySelector(officerOld);
+    this.officerNew = document.querySelector(officerNew);
+    this.oldItems = this.officerOld.querySelectorAll(items);
+    this.newItems = this.officerNew.querySelectorAll(items);
+    this.countOld = 0;
+    this.countNew = 0;
+  }
+
+  _createClass(Difference, [{
+    key: "showItem",
+    value: function showItem(container, items, counter) {
+      container.querySelector('.plus').addEventListener('click', function () {
+        if (counter !== items.length - 2) {
+          items[counter].style.display = ''; // items[counter].classList.add('')
+
+          counter++;
+        } else {
+          items[counter].style.display = '';
+          items[items.length - 1].remove();
+        }
+      });
+    }
+  }, {
+    key: "hideItems",
+    value: function hideItems(items) {
+      items.forEach(function (item, i, arr) {
+        if (i !== arr.length - 1) {
+          item.style.display = 'none';
+          item.classList.add('animated');
+        }
+      });
+    }
+  }, {
+    key: "init",
+    value: function init() {
+      this.hideItems(this.oldItems);
+      this.hideItems(this.newItems);
+      this.showItem(this.officerOld, this.oldItems, this.countOld);
+      this.showItem(this.officerNew, this.newItems, this.countNew);
+    }
+  }]);
+
+  return Difference;
+}();
+
+
 
 /***/ }),
 

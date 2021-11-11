@@ -4,6 +4,8 @@ export default class Slider{
 		btns = null,
 		next = null,
 		prev = null,
+		activeClass = '',
+		autoDrug = false,
 	} ={}) {
 
 		this.slider			= document.querySelector(sliderSelector);
@@ -12,5 +14,7 @@ export default class Slider{
 		this.slideIndex	= 1;
 		this.next			= document.querySelector(next);
 		this.prev			= document.querySelector(prev);
+		this.activeClass	= activeClass;
+		this.autoDrug		= autoDrug;
 	}
 }

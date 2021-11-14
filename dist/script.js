@@ -2845,8 +2845,7 @@ function () {
     value: function showItem(container, items, counter) {
       container.querySelector('.plus').addEventListener('click', function () {
         if (counter !== items.length - 2) {
-          items[counter].style.display = ''; // items[counter].classList.add('')
-
+          items[counter].style.display = '';
           counter++;
         } else {
           items[counter].style.display = '';
@@ -2860,7 +2859,7 @@ function () {
       items.forEach(function (item, i, arr) {
         if (i !== arr.length - 1) {
           item.style.display = 'none';
-          item.classList.add('animated');
+          item.classList.add('animated', 'fadeIn');
         }
       });
     }

@@ -12,7 +12,6 @@ export default class Difference{
 		container.querySelector('.plus').addEventListener('click', () => {
 			if (counter !== items.length - 2) {
 				items[counter].style.display = '';
-				// items[counter].classList.add('')
 				counter++;
 			} else {
 				items[counter].style.display = '';
@@ -25,7 +24,7 @@ export default class Difference{
 		items.forEach((item, i, arr) => {
 			if (i !== arr.length - 1) {
 				item.style.display = 'none';
-				item.classList.add('animated');
+				item.classList.add('animated', 'fadeIn');
 			}
 		});
 	}

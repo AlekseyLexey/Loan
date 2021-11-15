@@ -52,11 +52,14 @@ export default class Form {
 			}
 		}
 	
-		let input = document.getElementById('phone');
+		try {
+			let input = document.getElementById('phone');
 
-		input.addEventListener('input', createMask);
-		input.addEventListener('blur', createMask);
-		input.addEventListener('focus', createMask);
+			input.addEventListener('input', createMask);
+			input.addEventListener('blur', createMask);
+			input.addEventListener('focus', createMask);
+		} catch (error) {}
+
 	}
 
 	async processingPostData(url, data) {

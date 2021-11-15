@@ -5000,8 +5000,7 @@ window.addEventListener('DOMContentLoaded', function () {
   var player = new _modules_playVideo__WEBPACK_IMPORTED_MODULE_2__["default"]('.play', '.overlay');
   player.play();
   new _modules_difference__WEBPACK_IMPORTED_MODULE_0__["default"]('.officerold', '.officernew', '.officer__card-item').init();
-  var forms = new _modules_form__WEBPACK_IMPORTED_MODULE_1__["default"]('form', 'form input[name=email]');
-  forms.init();
+  new _modules_form__WEBPACK_IMPORTED_MODULE_1__["default"]('form', 'form input[name=email]').init();
 });
 
 /***/ }),
@@ -5032,12 +5031,14 @@ function () {
   function Difference(officerOld, officerNew, items) {
     _classCallCheck(this, Difference);
 
-    this.officerOld = document.querySelector(officerOld);
-    this.officerNew = document.querySelector(officerNew);
-    this.oldItems = this.officerOld.querySelectorAll(items);
-    this.newItems = this.officerNew.querySelectorAll(items);
-    this.countOld = 0;
-    this.countNew = 0;
+    try {
+      this.officerOld = document.querySelector(officerOld);
+      this.officerNew = document.querySelector(officerNew);
+      this.oldItems = this.officerOld.querySelectorAll(items);
+      this.newItems = this.officerNew.querySelectorAll(items);
+      this.countOld = 0;
+      this.countNew = 0;
+    } catch (error) {}
   }
 
   _createClass(Difference, [{
@@ -5066,10 +5067,12 @@ function () {
   }, {
     key: "init",
     value: function init() {
-      this.hideItems(this.oldItems);
-      this.hideItems(this.newItems);
-      this.showItem(this.officerOld, this.oldItems, this.countOld);
-      this.showItem(this.officerNew, this.newItems, this.countNew);
+      try {
+        this.hideItems(this.oldItems);
+        this.hideItems(this.newItems);
+        this.showItem(this.officerOld, this.oldItems, this.countOld);
+        this.showItem(this.officerNew, this.newItems, this.countNew);
+      } catch (error) {}
     }
   }]);
 
@@ -5174,10 +5177,12 @@ function () {
         }
       }
 
-      var input = document.getElementById('phone');
-      input.addEventListener('input', createMask);
-      input.addEventListener('blur', createMask);
-      input.addEventListener('focus', createMask);
+      try {
+        var input = document.getElementById('phone');
+        input.addEventListener('input', createMask);
+        input.addEventListener('blur', createMask);
+        input.addEventListener('focus', createMask);
+      } catch (error) {}
     }
   }, {
     key: "processingPostData",
@@ -5457,20 +5462,22 @@ function (_Slider) {
       var _this2 = this;
 
       try {
-        this.hanson = document.querySelector('.hanson');
+        try {
+          this.hanson = document.querySelector('.hanson');
+        } catch (error) {}
+
+        this.btns.forEach(function (element) {
+          element.addEventListener('click', function () {
+            _this2.plusSlide(1);
+          });
+          element.parentNode.previousElementSibling.addEventListener('click', function () {
+            _this2.slideIndex = 1;
+
+            _this2.showSlide(_this2.slideIndex);
+          });
+        });
+        this.showSlide(this.slideIndex);
       } catch (error) {}
-
-      this.btns.forEach(function (element) {
-        element.addEventListener('click', function () {
-          _this2.plusSlide(1);
-        });
-        element.parentNode.previousElementSibling.addEventListener('click', function () {
-          _this2.slideIndex = 1;
-
-          _this2.showSlide(_this2.slideIndex);
-        });
-      });
-      this.showSlide(this.slideIndex);
     }
   }]);
 
@@ -5597,32 +5604,34 @@ function (_Slider) {
     value: function init() {
       var _this3 = this;
 
-      this.activeSlide();
-      this.slider.style.cssText = "\n\t\t\tdisplay: flex;\n\t\t\toverflow: hidden;\n\t\t\talign-items: flex-start;\n\t\t\tflex-wrap: wrap;\n\t\t\tmax-height: 100%;\n\t\t\tjustify-content: flex-start;\n\t\t";
-      var timerSlider;
+      try {
+        this.activeSlide();
+        this.slider.style.cssText = "\n\t\t\t\tdisplay: flex;\n\t\t\t\toverflow: hidden;\n\t\t\t\talign-items: flex-start;\n\t\t\t\tflex-wrap: wrap;\n\t\t\t\tmax-height: 100%;\n\t\t\t\tjustify-content: flex-start;\n\t\t\t";
+        var timerSlider;
 
-      if (this.autoDrug) {
-        timerSlider = this.druggingSlide();
-        this.btns.forEach(function (btn) {
-          btn.addEventListener('mouseenter', function () {
-            clearInterval(timerSlider);
+        if (this.autoDrug) {
+          timerSlider = this.druggingSlide();
+          this.btns.forEach(function (btn) {
+            btn.addEventListener('mouseenter', function () {
+              clearInterval(timerSlider);
+            });
+            btn.addEventListener('mouseleave', function () {
+              timerSlider = _this3.druggingSlide();
+            });
           });
-          btn.addEventListener('mouseleave', function () {
-            timerSlider = _this3.druggingSlide();
-          });
+        }
+
+        this.next.addEventListener('click', function () {
+          _this3.nextSlide();
         });
-      }
+        this.prev.addEventListener('click', function () {
+          var lastSlide = _this3.slides[_this3.slides.length - 1];
 
-      this.next.addEventListener('click', function () {
-        _this3.nextSlide();
-      });
-      this.prev.addEventListener('click', function () {
-        var lastSlide = _this3.slides[_this3.slides.length - 1];
+          _this3.slider.insertBefore(lastSlide, _this3.slides[0]);
 
-        _this3.slider.insertBefore(lastSlide, _this3.slides[0]);
-
-        _this3.sliderActive();
-      });
+          _this3.sliderActive();
+        });
+      } catch (error) {}
     }
   }]);
 
@@ -5663,7 +5672,11 @@ var Slider = function Slider() {
   _classCallCheck(this, Slider);
 
   this.slider = document.querySelector(sliderSelector);
-  this.slides = this.slider.children;
+
+  try {
+    this.slides = this.slider.children;
+  } catch (error) {}
+
   this.btns = document.querySelectorAll(btns);
   this.slideIndex = 1;
   this.next = document.querySelector(next);

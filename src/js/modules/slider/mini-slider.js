@@ -36,39 +36,41 @@ export default class MiniSlider extends Slider {
 	}
 
 	init() {
-		this.activeSlide();
-		this.slider.style.cssText = `
-			display: flex;
-			overflow: hidden;
-			align-items: flex-start;
-			flex-wrap: wrap;
-			max-height: 100%;
-			justify-content: flex-start;
-		`;
-
-		let timerSlider;
-		if (this.autoDrug) {
-			timerSlider = this.druggingSlide();
-
-			this.btns.forEach(btn => {
-				btn.addEventListener('mouseenter', () => {
-					clearInterval(timerSlider);
+		try {
+			this.activeSlide();
+			this.slider.style.cssText = `
+				display: flex;
+				overflow: hidden;
+				align-items: flex-start;
+				flex-wrap: wrap;
+				max-height: 100%;
+				justify-content: flex-start;
+			`;
+	
+			let timerSlider;
+			if (this.autoDrug) {
+				timerSlider = this.druggingSlide();
+	
+				this.btns.forEach(btn => {
+					btn.addEventListener('mouseenter', () => {
+						clearInterval(timerSlider);
+					});
+	
+					btn.addEventListener('mouseleave', () => {
+						timerSlider = this.druggingSlide();
+					});
 				});
-
-				btn.addEventListener('mouseleave', () => {
-					timerSlider = this.druggingSlide();
-				});
+			}
+	
+			this.next.addEventListener('click', () => {
+				this.nextSlide();
 			});
-		}
-
-		this.next.addEventListener('click', () => {
-			this.nextSlide();
-		});
-
-		this.prev.addEventListener('click', () => {
-			let lastSlide = this.slides[this.slides.length - 1];
-			this.slider.insertBefore(lastSlide, this.slides[0]);
-			this.sliderActive();
-		});
+	
+			this.prev.addEventListener('click', () => {
+				let lastSlide = this.slides[this.slides.length - 1];
+				this.slider.insertBefore(lastSlide, this.slides[0]);
+				this.sliderActive();
+			});
+		} catch (error) {}
 	}
 }

@@ -9,7 +9,7 @@ export default class Slider{
 	} ={}) {
 
 		this.slider			= document.querySelector(sliderSelector);
-		this.slides			= this.slider.children;
+		try {this.slides	= this.slider.children;} catch (error) {}
 		this.btns			= document.querySelectorAll(btns);
 		this.slideIndex	= 1;
 		this.next			= document.querySelector(next);

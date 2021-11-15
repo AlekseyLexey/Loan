@@ -1,8 +1,8 @@
 import Slider from "./slider";
 
 export default class SliderMain extends Slider {
-	constructor(sliderSelector, btns) {
-		super(sliderSelector, btns);
+	constructor(sliderSelector, next, prev) {
+		super(sliderSelector, next, prev);
 	}
 
 	showSlide(n) {
@@ -43,22 +43,41 @@ export default class SliderMain extends Slider {
 	}
 
 	render() {
-		try {
+		if (this.slider) {
 			try {
 				this.hanson = document.querySelector('.hanson');
 			} catch (error) {}
 
-			this.btns.forEach(element => {
-				element.addEventListener('click', () => {
+			this.next.forEach(item => {
+				item.addEventListener('click', () => {
 					this.plusSlide(1);
-				});
-				element.parentNode.previousElementSibling.addEventListener('click', () => {
-					this.slideIndex = 1;
-					this.showSlide(this.slideIndex);
+					if (item.parentNode.classList.contains('sidecontrol__controls')) {
+						item.parentNode.previousElementSibling.addEventListener('click', () => {
+							this.slideIndex = 1;
+							this.showSlide(this.slideIndex);
+						});
+					}
+	
 				});
 			});
 
+			this.prev.forEach(item => {
+				item.addEventListener('click', () => {
+					this.plusSlide(-1);
+				});
+			});
+
+
+			// this.btns.forEach(element => {
+			// 	element.addEventListener('click', () => {
+			// 	});
+			// 	element.parentNode.previousElementSibling.addEventListener('click', () => {
+			// 		this.slideIndex = 1;
+			// 		this.showSlide(this.slideIndex);
+			// 	});
+			// });
+
 			this.showSlide(this.slideIndex);
-		} catch (error) {}
+		}
 	}
 }

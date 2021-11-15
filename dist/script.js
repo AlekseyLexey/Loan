@@ -4971,9 +4971,15 @@ window.addEventListener('DOMContentLoaded', function () {
 
   var sliderMain = new _modules_slider_main_slider__WEBPACK_IMPORTED_MODULE_3__["default"]({
     sliderSelector: '.page',
-    btns: '.next'
+    next: '.next'
   });
   sliderMain.render();
+  var sliderModulesMain = new _modules_slider_main_slider__WEBPACK_IMPORTED_MODULE_3__["default"]({
+    sliderSelector: '.moduleapp',
+    next: '.next',
+    prev: '.prev'
+  });
+  sliderModulesMain.render();
   var showUpSlider = new _modules_slider_mini_slider__WEBPACK_IMPORTED_MODULE_4__["default"]({
     sliderSelector: '.showup__content-slider',
     next: '.showup__next',
@@ -5410,10 +5416,10 @@ var SliderMain =
 function (_Slider) {
   _inherits(SliderMain, _Slider);
 
-  function SliderMain(sliderSelector, btns) {
+  function SliderMain(sliderSelector, next, prev) {
     _classCallCheck(this, SliderMain);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(SliderMain).call(this, sliderSelector, btns));
+    return _possibleConstructorReturn(this, _getPrototypeOf(SliderMain).call(this, sliderSelector, next, prev));
   }
 
   _createClass(SliderMain, [{
@@ -5461,23 +5467,39 @@ function (_Slider) {
     value: function render() {
       var _this2 = this;
 
-      try {
+      if (this.slider) {
         try {
           this.hanson = document.querySelector('.hanson');
         } catch (error) {}
 
-        this.btns.forEach(function (element) {
-          element.addEventListener('click', function () {
+        this.next.forEach(function (item) {
+          item.addEventListener('click', function () {
             _this2.plusSlide(1);
-          });
-          element.parentNode.previousElementSibling.addEventListener('click', function () {
-            _this2.slideIndex = 1;
 
-            _this2.showSlide(_this2.slideIndex);
+            if (item.parentNode.classList.contains('sidecontrol__controls')) {
+              item.parentNode.previousElementSibling.addEventListener('click', function () {
+                _this2.slideIndex = 1;
+
+                _this2.showSlide(_this2.slideIndex);
+              });
+            }
           });
         });
+        this.prev.forEach(function (item) {
+          item.addEventListener('click', function () {
+            _this2.plusSlide(-1);
+          });
+        }); // this.btns.forEach(element => {
+        // 	element.addEventListener('click', () => {
+        // 	});
+        // 	element.parentNode.previousElementSibling.addEventListener('click', () => {
+        // 		this.slideIndex = 1;
+        // 		this.showSlide(this.slideIndex);
+        // 	});
+        // });
+
         this.showSlide(this.slideIndex);
-      } catch (error) {}
+      }
     }
   }]);
 
@@ -5621,15 +5643,19 @@ function (_Slider) {
           });
         }
 
-        this.next.addEventListener('click', function () {
-          _this3.nextSlide();
+        this.next.forEach(function (item) {
+          item.addEventListener('click', function () {
+            _this3.nextSlide();
+          });
         });
-        this.prev.addEventListener('click', function () {
-          var lastSlide = _this3.slides[_this3.slides.length - 1];
+        this.prev.forEach(function (item) {
+          item.addEventListener('click', function () {
+            var lastSlide = _this3.slides[_this3.slides.length - 1];
 
-          _this3.slider.insertBefore(lastSlide, _this3.slides[0]);
+            _this3.slider.insertBefore(lastSlide, _this3.slides[0]);
 
-          _this3.sliderActive();
+            _this3.sliderActive();
+          });
         });
       } catch (error) {}
     }
@@ -5679,8 +5705,8 @@ var Slider = function Slider() {
 
   this.btns = document.querySelectorAll(btns);
   this.slideIndex = 1;
-  this.next = document.querySelector(next);
-  this.prev = document.querySelector(prev);
+  this.next = document.querySelectorAll(next);
+  this.prev = document.querySelectorAll(prev);
   this.activeClass = activeClass;
   this.autoDrug = autoDrug;
 };

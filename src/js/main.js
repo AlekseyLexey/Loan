@@ -10,8 +10,11 @@ import MiniSlider from "./modules/slider/mini-slider";
 window.addEventListener('DOMContentLoaded', () => {
 	"use strict";
 
-	const sliderMain = new SliderMain({sliderSelector: '.page', btns: '.next'});
+	const sliderMain = new SliderMain({sliderSelector: '.page', next: '.next'});
 	sliderMain.render();
+
+	const sliderModulesMain = new SliderMain({sliderSelector: '.moduleapp', next: '.next', prev:'.prev'});
+	sliderModulesMain.render();
 
 	const showUpSlider = new MiniSlider({
 		sliderSelector: '.showup__content-slider',

@@ -1,4 +1,5 @@
 import Difference from "./modules/difference";
+import Form from "./modules/form";
 import Player from "./modules/playVideo";
 import SliderMain from "./modules/slider/main-slider";
 import MiniSlider from "./modules/slider/mini-slider";
@@ -42,4 +43,6 @@ window.addEventListener('DOMContentLoaded', () => {
 	player.play();
 
 	new Difference('.officerold', '.officernew', '.officer__card-item').init();
+
+	new Form('form', 'form input[name=email]').init();
 });

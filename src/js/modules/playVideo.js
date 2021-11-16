@@ -7,9 +7,16 @@ export default class Player{
 
 	closePlay() {
 		this.close.addEventListener('click', () => {
-			this.modal.style.display = '';
 
-			this.player.stopVideo();
+			this.modal.style.display = '';
+			try {
+				try {
+					if (this.player.getPlayerState() === 0) {
+						this.unblockVideo(this.activeBtn);
+					}
+				} catch (error) {}
+				this.player.stopVideo();
+			} catch (error) {}
 		});
 	}
 
@@ -17,19 +24,43 @@ export default class Player{
 		this.player = new YT.Player('frame', {
 			height: '100%',
 			width: '100%',
-			videoId: `${url}`
+			videoId:`${url}`
 		});
 	}
 
+	unblockVideo(activeItem) {
+			const closeBlock	= activeItem.parentNode.nextElementSibling,
+					cloneIcon	= activeItem.querySelector('svg').cloneNode(true);
+
+			closeBlock.style.cssText = `
+				opacity: 1;
+				filter: none;
+			`;
+			closeBlock.querySelector('.play__circle').classList.remove('closed');
+			closeBlock.querySelector('svg').remove();
+			closeBlock.querySelector('.play__circle').appendChild(cloneIcon);
+			closeBlock.querySelector('.play__text').classList.remove('attention');
+			closeBlock.querySelector('.play__text').textContent = 'play video';
+		}
+
 	triggerPlay() {
 		this.bnts.forEach(item => {
+			
 			item.addEventListener('click', () => {
-
-				if (!document.querySelector('iframe#frame')) {
-					const path = item.getAttribute('data-url');
-					this.createPlayer(path);
+				if (!item.querySelector('.play__circle').classList.contains('closed')) {
+					this.activeBtn = item;
+				
+					if (!document.querySelector('iframe#frame')) {
+						this.path = item.getAttribute('data-url');
+						this.createPlayer(this.path);
+					}
+					if (this.path !== item.getAttribute('data-url')) {
+						this.path = item.getAttribute('data-url');
+						this.player.loadVideoById({videoId: this.path});
+					}
+	
+					this.modal.style.display = 'flex';
 				}
-				this.modal.style.display = 'flex';
 			});
 		});
 	}

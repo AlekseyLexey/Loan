@@ -5003,8 +5003,8 @@ window.addEventListener('DOMContentLoaded', function () {
     activeClass: 'feed__item-active'
   });
   feedSlider.init();
-  var player = new _modules_playVideo__WEBPACK_IMPORTED_MODULE_2__["default"]('.play', '.overlay');
-  player.play();
+  new _modules_playVideo__WEBPACK_IMPORTED_MODULE_2__["default"]('.showup .play', '.overlay').play();
+  new _modules_playVideo__WEBPACK_IMPORTED_MODULE_2__["default"]('.module .play', '.overlay').play();
   new _modules_difference__WEBPACK_IMPORTED_MODULE_0__["default"]('.officerold', '.officernew', '.officer__card-item').init();
   new _modules_form__WEBPACK_IMPORTED_MODULE_1__["default"]('form', 'form input[name=email]').init();
 });
@@ -5304,7 +5304,15 @@ function () {
       this.close.addEventListener('click', function () {
         _this.modal.style.display = '';
 
-        _this.player.stopVideo();
+        try {
+          try {
+            if (_this.player.getPlayerState() === 0) {
+              _this.unblockVideo(_this.activeBtn);
+            }
+          } catch (error) {}
+
+          _this.player.stopVideo();
+        } catch (error) {}
       });
     }
   }, {
@@ -5317,19 +5325,43 @@ function () {
       });
     }
   }, {
+    key: "unblockVideo",
+    value: function unblockVideo(activeItem) {
+      var closeBlock = activeItem.parentNode.nextElementSibling,
+          cloneIcon = activeItem.querySelector('svg').cloneNode(true);
+      closeBlock.style.cssText = "\n\t\t\t\topacity: 1;\n\t\t\t\tfilter: none;\n\t\t\t";
+      closeBlock.querySelector('.play__circle').classList.remove('closed');
+      closeBlock.querySelector('svg').remove();
+      closeBlock.querySelector('.play__circle').appendChild(cloneIcon);
+      closeBlock.querySelector('.play__text').classList.remove('attention');
+      closeBlock.querySelector('.play__text').textContent = 'play video';
+    }
+  }, {
     key: "triggerPlay",
     value: function triggerPlay() {
       var _this2 = this;
 
       this.bnts.forEach(function (item) {
         item.addEventListener('click', function () {
-          if (!document.querySelector('iframe#frame')) {
-            var path = item.getAttribute('data-url');
+          if (!item.querySelector('.play__circle').classList.contains('closed')) {
+            _this2.activeBtn = item;
 
-            _this2.createPlayer(path);
+            if (!document.querySelector('iframe#frame')) {
+              _this2.path = item.getAttribute('data-url');
+
+              _this2.createPlayer(_this2.path);
+            }
+
+            if (_this2.path !== item.getAttribute('data-url')) {
+              _this2.path = item.getAttribute('data-url');
+
+              _this2.player.loadVideoById({
+                videoId: _this2.path
+              });
+            }
+
+            _this2.modal.style.display = 'flex';
           }
-
-          _this2.modal.style.display = 'flex';
         });
       });
     }
@@ -5463,41 +5495,38 @@ function (_Slider) {
       this.showSlide(this.slideIndex += n);
     }
   }, {
-    key: "render",
-    value: function render() {
+    key: "listenerButtons",
+    value: function listenerButtons() {
       var _this2 = this;
 
+      this.next.forEach(function (item) {
+        item.addEventListener('click', function () {
+          _this2.plusSlide(1);
+
+          if (item.parentNode.classList.contains('sidecontrol__controls')) {
+            item.parentNode.previousElementSibling.addEventListener('click', function () {
+              _this2.slideIndex = 1;
+
+              _this2.showSlide(_this2.slideIndex);
+            });
+          }
+        });
+      });
+      this.prev.forEach(function (item) {
+        item.addEventListener('click', function () {
+          _this2.plusSlide(-1);
+        });
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
       if (this.slider) {
         try {
           this.hanson = document.querySelector('.hanson');
         } catch (error) {}
 
-        this.next.forEach(function (item) {
-          item.addEventListener('click', function () {
-            _this2.plusSlide(1);
-
-            if (item.parentNode.classList.contains('sidecontrol__controls')) {
-              item.parentNode.previousElementSibling.addEventListener('click', function () {
-                _this2.slideIndex = 1;
-
-                _this2.showSlide(_this2.slideIndex);
-              });
-            }
-          });
-        });
-        this.prev.forEach(function (item) {
-          item.addEventListener('click', function () {
-            _this2.plusSlide(-1);
-          });
-        }); // this.btns.forEach(element => {
-        // 	element.addEventListener('click', () => {
-        // 	});
-        // 	element.parentNode.previousElementSibling.addEventListener('click', () => {
-        // 		this.slideIndex = 1;
-        // 		this.showSlide(this.slideIndex);
-        // 	});
-        // });
-
+        this.listenerButtons();
         this.showSlide(this.slideIndex);
       }
     }

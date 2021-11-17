@@ -2,6 +2,9 @@ export default class Form {
 	constructor(forms, emailInputs) {
 		this.forms				= document.querySelectorAll(forms);
 		this.emailInputs		= document.querySelectorAll(emailInputs);
+		try {
+			this.inputPhone = document.getElementById('phone');
+		} catch (error) {}
 	}
 
 	validationEmail (input) {
@@ -53,11 +56,10 @@ export default class Form {
 		}
 	
 		try {
-			let input = document.getElementById('phone');
 
-			input.addEventListener('input', createMask);
-			input.addEventListener('blur', createMask);
-			input.addEventListener('focus', createMask);
+			this.inputPhone.addEventListener('input', createMask);
+			this.inputPhone.addEventListener('blur', createMask);
+			this.inputPhone.addEventListener('focus', createMask);
 		} catch (error) {}
 
 	}
@@ -75,27 +77,30 @@ export default class Form {
 		form.addEventListener('submit', (e) => {
 			e.preventDefault();
 
-			const formData						= new FormData(form);
+			if (this.inputPhone.value.length === 17) {
 
-			this.processingPostData('assets/question.php', formData)
-				.then(data => {
-					console.log(data);
-					// statusImg.setAttribute('src', message.ok);
-					// textMessage.textContent = message.success;
-				})
-				.catch(() => {
-					// statusImg.setAttribute('src', message.fail);
-					// textMessage.textContent = message.failure;
-				})
-				.finally(() => {
-				form.reset();
-				// setTimeout(() => {
-				// 	statusMessage.remove();
-				// 	form.style.display = 'block';
-				// 	form.classList.remove('fadeOutUp');
-				// 	form.classList.add('fadeInUp');
-				// }, 5000);
-			});
+				const formData						= new FormData(form);
+
+				this.processingPostData('assets/question.php', formData)
+					.then(data => {
+						console.log(data);
+						// statusImg.setAttribute('src', message.ok);
+						// textMessage.textContent = message.success;
+					})
+					.catch(() => {
+						// statusImg.setAttribute('src', message.fail);
+						// textMessage.textContent = message.failure;
+					})
+					.finally(() => {
+					form.reset();
+					// setTimeout(() => {
+					// 	statusMessage.remove();
+					// 	form.style.display = 'block';
+					// 	form.classList.remove('fadeOutUp');
+					// 	form.classList.add('fadeInUp');
+					// }, 5000);
+				});
+			}
 		});
 	}
 

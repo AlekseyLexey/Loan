@@ -1,5 +1,6 @@
 import Accordion from "./modules/accordion";
 import Difference from "./modules/difference";
+import Download from "./modules/download";
 import Form from "./modules/form";
 import Player from "./modules/playVideo";
 import SliderMain from "./modules/slider/main-slider";
@@ -51,4 +52,6 @@ window.addEventListener('DOMContentLoaded', () => {
 	new Form('form', 'form input[name=email]').init();
 
 	new Accordion('.plus', '.msg').init();
+
+	new Download('.download').init();
 });

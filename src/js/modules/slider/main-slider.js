@@ -1,8 +1,8 @@
 import Slider from "./slider";
 
 export default class SliderMain extends Slider {
-	constructor(sliderSelector, next, prev) {
-		super(sliderSelector, next, prev);
+	constructor(sliderSelector, next, prev, sliderButtonMain) {
+		super(sliderSelector, next, prev, sliderButtonMain);
 	}
 
 	showSlide(n) {
@@ -42,17 +42,20 @@ export default class SliderMain extends Slider {
 		this.showSlide(this.slideIndex += n);
 	}
 
+	listenerMainButton() {
+		this.sliderButtonMain.forEach(item => {
+			item.addEventListener('click', (e) => {
+				e.preventDefault();
+				this.slideIndex = 1;
+				this.showSlide(this.slideIndex);
+			});
+		});
+	}
+
 	listenerButtons() {
 		this.next.forEach(item => {
 			item.addEventListener('click', () => {
 				this.plusSlide(1);
-				if (item.parentNode.classList.contains('sidecontrol__controls')) {
-					item.parentNode.previousElementSibling.addEventListener('click', () => {
-						this.slideIndex = 1;
-						this.showSlide(this.slideIndex);
-					});
-				}
-
 			});
 		});
 
@@ -72,6 +75,7 @@ export default class SliderMain extends Slider {
 			this.listenerButtons();
 
 			this.showSlide(this.slideIndex);
+			this.listenerMainButton();
 		}
 	}
 }

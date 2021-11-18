@@ -4971,13 +4971,15 @@ window.addEventListener('DOMContentLoaded', function () {
 
   var sliderMain = new _modules_slider_main_slider__WEBPACK_IMPORTED_MODULE_3__["default"]({
     sliderSelector: '.page',
-    next: '.next'
+    next: '.next',
+    sliderButtonMain: '.sidecontrol > a'
   });
   sliderMain.render();
   var sliderModulesMain = new _modules_slider_main_slider__WEBPACK_IMPORTED_MODULE_3__["default"]({
     sliderSelector: '.moduleapp',
     next: '.next',
-    prev: '.prev'
+    prev: '.prev',
+    sliderButtonMain: '.sidecontrol > a'
   });
   sliderModulesMain.render();
   var showUpSlider = new _modules_slider_mini_slider__WEBPACK_IMPORTED_MODULE_4__["default"]({
@@ -5132,6 +5134,10 @@ function () {
 
     this.forms = document.querySelectorAll(forms);
     this.emailInputs = document.querySelectorAll(emailInputs);
+
+    try {
+      this.inputPhone = document.getElementById('phone');
+    } catch (error) {}
   }
 
   _createClass(Form, [{
@@ -5184,10 +5190,9 @@ function () {
       }
 
       try {
-        var input = document.getElementById('phone');
-        input.addEventListener('input', createMask);
-        input.addEventListener('blur', createMask);
-        input.addEventListener('focus', createMask);
+        this.inputPhone.addEventListener('input', createMask);
+        this.inputPhone.addEventListener('blur', createMask);
+        this.inputPhone.addEventListener('focus', createMask);
       } catch (error) {}
     }
   }, {
@@ -5226,21 +5231,24 @@ function () {
 
       form.addEventListener('submit', function (e) {
         e.preventDefault();
-        var formData = new FormData(form);
 
-        _this.processingPostData('assets/question.php', formData).then(function (data) {
-          console.log(data); // statusImg.setAttribute('src', message.ok);
-          // textMessage.textContent = message.success;
-        }).catch(function () {// statusImg.setAttribute('src', message.fail);
-          // textMessage.textContent = message.failure;
-        }).finally(function () {
-          form.reset(); // setTimeout(() => {
-          // 	statusMessage.remove();
-          // 	form.style.display = 'block';
-          // 	form.classList.remove('fadeOutUp');
-          // 	form.classList.add('fadeInUp');
-          // }, 5000);
-        });
+        if (_this.inputPhone.value.length === 17) {
+          var formData = new FormData(form);
+
+          _this.processingPostData('assets/question.php', formData).then(function (data) {
+            console.log(data); // statusImg.setAttribute('src', message.ok);
+            // textMessage.textContent = message.success;
+          }).catch(function () {// statusImg.setAttribute('src', message.fail);
+            // textMessage.textContent = message.failure;
+          }).finally(function () {
+            form.reset(); // setTimeout(() => {
+            // 	statusMessage.remove();
+            // 	form.style.display = 'block';
+            // 	form.classList.remove('fadeOutUp');
+            // 	form.classList.add('fadeInUp');
+            // }, 5000);
+          });
+        }
       });
     }
   }, {
@@ -5448,10 +5456,10 @@ var SliderMain =
 function (_Slider) {
   _inherits(SliderMain, _Slider);
 
-  function SliderMain(sliderSelector, next, prev) {
+  function SliderMain(sliderSelector, next, prev, sliderButtonMain) {
     _classCallCheck(this, SliderMain);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(SliderMain).call(this, sliderSelector, next, prev));
+    return _possibleConstructorReturn(this, _getPrototypeOf(SliderMain).call(this, sliderSelector, next, prev, sliderButtonMain));
   }
 
   _createClass(SliderMain, [{
@@ -5495,26 +5503,32 @@ function (_Slider) {
       this.showSlide(this.slideIndex += n);
     }
   }, {
+    key: "listenerMainButton",
+    value: function listenerMainButton() {
+      var _this2 = this;
+
+      this.sliderButtonMain.forEach(function (item) {
+        item.addEventListener('click', function (e) {
+          e.preventDefault();
+          _this2.slideIndex = 1;
+
+          _this2.showSlide(_this2.slideIndex);
+        });
+      });
+    }
+  }, {
     key: "listenerButtons",
     value: function listenerButtons() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.next.forEach(function (item) {
         item.addEventListener('click', function () {
-          _this2.plusSlide(1);
-
-          if (item.parentNode.classList.contains('sidecontrol__controls')) {
-            item.parentNode.previousElementSibling.addEventListener('click', function () {
-              _this2.slideIndex = 1;
-
-              _this2.showSlide(_this2.slideIndex);
-            });
-          }
+          _this3.plusSlide(1);
         });
       });
       this.prev.forEach(function (item) {
         item.addEventListener('click', function () {
-          _this2.plusSlide(-1);
+          _this3.plusSlide(-1);
         });
       });
     }
@@ -5528,6 +5542,7 @@ function (_Slider) {
 
         this.listenerButtons();
         this.showSlide(this.slideIndex);
+        this.listenerMainButton();
       }
     }
   }]);
@@ -5713,6 +5728,8 @@ var Slider = function Slider() {
   var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
       _ref$sliderSelector = _ref.sliderSelector,
       sliderSelector = _ref$sliderSelector === void 0 ? null : _ref$sliderSelector,
+      _ref$sliderButtonMain = _ref.sliderButtonMain,
+      sliderButtonMain = _ref$sliderButtonMain === void 0 ? null : _ref$sliderButtonMain,
       _ref$btns = _ref.btns,
       btns = _ref$btns === void 0 ? null : _ref$btns,
       _ref$next = _ref.next,
@@ -5726,6 +5743,7 @@ var Slider = function Slider() {
 
   _classCallCheck(this, Slider);
 
+  this.sliderButtonMain = document.querySelectorAll(sliderButtonMain);
   this.slider = document.querySelector(sliderSelector);
 
   try {

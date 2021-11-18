@@ -1,3 +1,4 @@
+import Accordion from "./modules/accordion";
 import Difference from "./modules/difference";
 import Form from "./modules/form";
 import Player from "./modules/playVideo";
@@ -48,4 +49,6 @@ window.addEventListener('DOMContentLoaded', () => {
 	new Difference('.officerold', '.officernew', '.officer__card-item').init();
 
 	new Form('form', 'form input[name=email]').init();
+
+	new Accordion('.plus', '.msg').init();
 });

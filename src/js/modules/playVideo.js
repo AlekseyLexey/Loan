@@ -6,17 +6,28 @@ export default class Player{
 	}
 
 	closePlay() {
-		this.close.addEventListener('click', () => {
-
-			this.modal.style.display = '';
+		this.modal.style.cssText = `
+			width: 0;
+			height: 0;
+			top: 50%;
+			left: 50%;
+		`;
+		try {
 			try {
-				try {
-					if (this.player.getPlayerState() === 0) {
-						this.unblockVideo(this.activeBtn);
-					}
-				} catch (error) {}
-				this.player.stopVideo();
+				if (this.player.getPlayerState() === 0) {
+					this.unblockVideo(this.activeBtn);
+				}
 			} catch (error) {}
+			this.player.stopVideo();
+		} catch (error) {}
+	}
+
+	closePlayWithModal() {
+		this.modal.addEventListener('click', (e) => {
+			const target = e.target;
+			if (target && target.classList.contains('overlay')) {
+				this.closePlay();
+			}
 		});
 	}
 
@@ -59,7 +70,12 @@ export default class Player{
 						this.player.loadVideoById({videoId: this.path});
 					}
 	
-					this.modal.style.display = 'flex';
+					this.modal.style.cssText = `
+						width: 100%;
+						height: 100%;
+						top: 0;
+						left: 0;
+					`;
 				}
 			});
 		});
@@ -74,6 +90,9 @@ export default class Player{
 		firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
 		this.triggerPlay();
-		this.closePlay();
+		this.close.addEventListener('click', () => {
+			this.closePlay();
+		});
+		this.closePlayWithModal();
 	}
 }

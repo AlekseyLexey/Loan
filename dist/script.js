@@ -5045,7 +5045,7 @@ function () {
   function Accordion(triggers, contents) {
     _classCallCheck(this, Accordion);
 
-    this.trigger = document.querySelectorAll(triggers);
+    this.triggers = document.querySelectorAll(triggers);
     this.msg = document.querySelectorAll(contents);
   }
 
@@ -5059,12 +5059,12 @@ function () {
           item.addEventListener('click', function () {
             item.classList.toggle('active-contant-show');
 
-            if (item.classList.contains('active-contant-show')) {
+            if (!item.classList.contains('active-contant-show')) {
               _this.msg[i].style.cssText = "\n\t\t\t\t\t\tmax-height: 0;\n\t\t\t\t\t\topacity: 0;\n\t\t\t\t\t\tvisibility: hidden;\n\t\t\t\t\t\t";
             } else {
+              _this.msg[i].style.maxHeight = _this.msg[i].scrollHeight + 20 + 'px';
               _this.msg[i].style.opacity = 1;
               _this.msg[i].style.visibility = 'visible';
-              _this.msg[i].style.maxHeight = _this.msg[i].scrollHeight + 20 + 'px';
             }
           });
         });
@@ -5436,20 +5436,29 @@ function () {
   _createClass(Player, [{
     key: "closePlay",
     value: function closePlay() {
+      this.modal.style.cssText = "\n\t\t\twidth: 0;\n\t\t\theight: 0;\n\t\t\ttop: 50%;\n\t\t\tleft: 50%;\n\t\t";
+
+      try {
+        try {
+          if (this.player.getPlayerState() === 0) {
+            this.unblockVideo(this.activeBtn);
+          }
+        } catch (error) {}
+
+        this.player.stopVideo();
+      } catch (error) {}
+    }
+  }, {
+    key: "closePlayWithModal",
+    value: function closePlayWithModal() {
       var _this = this;
 
-      this.close.addEventListener('click', function () {
-        _this.modal.style.display = '';
+      this.modal.addEventListener('click', function (e) {
+        var target = e.target;
 
-        try {
-          try {
-            if (_this.player.getPlayerState() === 0) {
-              _this.unblockVideo(_this.activeBtn);
-            }
-          } catch (error) {}
-
-          _this.player.stopVideo();
-        } catch (error) {}
+        if (target && target.classList.contains('overlay')) {
+          _this.closePlay();
+        }
       });
     }
   }, {
@@ -5497,7 +5506,7 @@ function () {
               });
             }
 
-            _this2.modal.style.display = 'flex';
+            _this2.modal.style.cssText = "\n\t\t\t\t\t\twidth: 100%;\n\t\t\t\t\t\theight: 100%;\n\t\t\t\t\t\ttop: 0;\n\t\t\t\t\t\tleft: 0;\n\t\t\t\t\t";
           }
         });
       });
@@ -5505,12 +5514,17 @@ function () {
   }, {
     key: "play",
     value: function play() {
+      var _this3 = this;
+
       var tag = document.createElement('script');
       tag.src = "https://www.youtube.com/iframe_api";
       var firstScriptTag = document.getElementsByTagName('script')[0];
       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
       this.triggerPlay();
-      this.closePlay();
+      this.close.addEventListener('click', function () {
+        _this3.closePlay();
+      });
+      this.closePlayWithModal();
     }
   }]);
 

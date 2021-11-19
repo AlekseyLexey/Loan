@@ -1,5 +1,6 @@
 import Accordion from "./modules/accordion";
 import Difference from "./modules/difference";
+import Download from "./modules/download";
 import Form from "./modules/form";
 import Player from "./modules/playVideo";
 import SliderMain from "./modules/slider/main-slider";
@@ -11,10 +12,10 @@ import MiniSlider from "./modules/slider/mini-slider";
 window.addEventListener('DOMContentLoaded', () => {
 	"use strict";
 
-	const sliderMain = new SliderMain({sliderSelector: '.page', next: '.next'});
+	const sliderMain = new SliderMain({sliderSelector: '.page', next: '.next', sliderButtonMain: '.sidecontrol > a'});
 	sliderMain.render();
 
-	const sliderModulesMain = new SliderMain({sliderSelector: '.moduleapp', next: '.next', prev:'.prev'});
+	const sliderModulesMain = new SliderMain({sliderSelector: '.moduleapp', next: '.next', prev:'.prev', sliderButtonMain: '.sidecontrol > a'});
 	sliderModulesMain.render();
 
 	const showUpSlider = new MiniSlider({
@@ -51,4 +52,6 @@ window.addEventListener('DOMContentLoaded', () => {
 	new Form('form', 'form input[name=email]').init();
 
 	new Accordion('.plus', '.msg').init();
+
+	new Download('.download').init();
 });
